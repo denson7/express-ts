@@ -1,6 +1,8 @@
 import express, { Application } from 'express';
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
+import httpRequestContext from 'http-request-context';
+import requestId from './middleware/requestId';
 import routeLoader from './routes';
 
 class App {
@@ -24,6 +26,9 @@ class App {
   }
 
   private initMiddleware() {
+    // add RequestId
+    this.app.use(httpRequestContext.middleware());
+    this.app.use(requestId);
     // 跨域
     this.app.use(cors());
     // 解析post数据
